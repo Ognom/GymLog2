@@ -1,5 +1,6 @@
 package com.ognom.gymlog;
 
+import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.ognom.database.DatabaseHelper;
 import com.ognom.util.Category; //Ta bort tillsammans med bogus add-metod.
 import com.ognom.util.Exercise; //Ta bort som ovanstående.
 
@@ -33,6 +35,7 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_exercise);
 
@@ -85,17 +88,12 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
 
     private void addValues(ArrayAdapter<String> a){
 
-        Category back = new Category((new Exercise("Marklyft", "Back")), "Back");
-        String name = back.getName();
-
-
-
-        a.add("Biceps");
-        a.add("Triceps");
-        a.add("Chest");
-        a.add("Legs");
-        a.add("Back");
-        a.add("Abs");
+        Cursor c = HomeScreen.dbHelper.getExerciseByCategory("Back");
+        c.moveToFirst();
+        String s = c.getString(1);
+        a.add(s);
+        if(c.moveToNext())
+            a.add(c.getString(1));
     }
 
     @Override

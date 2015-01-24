@@ -13,10 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.ognom.database.DatabaseHelper;
-import com.ognom.util.Category; //Ta bort tillsammans med bogus add-metod.
-import com.ognom.util.Exercise; //Ta bort som ovanstående.
-
 import java.util.ArrayList;
 
 
@@ -24,7 +20,7 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
 
     private final String TAG = "AE";
 
-    ArrayList<String> list = new ArrayList<String>();
+    ArrayList<String> list = new ArrayList<>();
     ArrayAdapter<String> adapter;
 
     View v;
@@ -41,7 +37,7 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
 
         final ListView lvExercises = (ListView) findViewById(R.id.lvCategories);
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         lvExercises.setAdapter(adapter);
 
         addValues(adapter);
@@ -89,11 +85,12 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
     private void addValues(ArrayAdapter<String> a){
 
         Cursor c = HomeScreen.dbHelper.getExerciseByCategory("Back");
-        c.moveToFirst();
-        String s = c.getString(1);
-        a.add(s);
-        if(c.moveToNext())
-            a.add(c.getString(1));
+        if(c.moveToFirst()) {
+            String s = c.getString(1);
+            a.add(s);
+            while (c.moveToNext())
+                a.add(c.getString(1));
+        }
     }
 
     @Override

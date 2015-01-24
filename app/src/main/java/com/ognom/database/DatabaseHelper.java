@@ -8,11 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.ognom.util.Exercise;
 
-/**
- * Created by Ognom on 2015-01-22.
- */
-
-
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
@@ -34,14 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public DatabaseHelper(Context context){
 
-        super(context, dbName, null, 33);
-    }
-
-
-    //Creates an instance of the Database, fills it with desired tables and returns the DB.
-    public void createDatabase(){
-        db = getWritableDatabase();
-        onCreate(db);
+        super(context, dbName, null, 35);
     }
 
     private SQLiteDatabase getDB(){
@@ -77,9 +65,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("CREATE VIEW IF NOT EXISTS "+viewExercises+
         " AS SELECT "+exerciseTable+"."+colID+" AS _id,"+
         " "+exerciseTable+"."+colName+","+
-        " "+categoryTable+"."+colCategoryName+""+ //TODO: WTF ""?
+        " "+categoryTable+"."+colCategoryName+
         " FROM "+exerciseTable+" JOIN "+categoryTable+
         " ON "+exerciseTable+"."+colCategory+" ="+categoryTable+"."+colCategoryID);
+
 
         insertValues(db); //Adds some values to the Database.
 

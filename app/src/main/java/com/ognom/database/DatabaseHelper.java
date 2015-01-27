@@ -2,11 +2,8 @@ package com.ognom.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.ognom.util.Exercise;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper{
@@ -16,39 +13,37 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     static final String exerciseTable = "Exercises";
     static final String categoryTable = "Category";
 
-    static final String colID = "ExerciseID";
-    static final String colName = "ExerciseName";
-    static final String colCategory = "Category";
+    static final String colExerciseID = "ExerciseID";
+    static final String colExerciseName = "ExerciseName";
+    static final String colExerciseCategory = "Category";
 
     static final String colCategoryID = "CategoryID";
     static final String colCategoryName = "CategoryName";
 
     static final String viewExercises = "ViewExercises";
 
-    private SQLiteDatabase db;
-
     public DatabaseHelper(Context context){
-
-        super(context, dbName, null, 35);
-    }
-
-    private SQLiteDatabase getDB(){
-        return this.db;
+        super(context, dbName, null, 37);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
         //Creates the Category table
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + categoryTable + " ("+colCategoryID+ " INTEGER PRIMARY KEY, "+
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+
+        categoryTable + " ("+colCategoryID+ " INTEGER PRIMARY KEY, "+
         colCategoryName+ " TEXT)");
 
         //Creates the Exercise Table
-        db.execSQL("CREATE TABLE IF NOT EXISTS "+ exerciseTable + "("
-        +colID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
-        colName+" TEXT, "+colCategory+
-        " INTEGER NOT NULL ,FOREIGN KEY ("+colCategory+") REFERENCES "
-        +categoryTable+" ("+colCategoryID+"));");
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+
+        exerciseTable + "("
+        +colExerciseID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+        colExerciseName+" TEXT, "+
+        colExerciseCategory+ " INTEGER NOT NULL, " +
+        "FOREIGN KEY ("+colExerciseCategory+") REFERENCES "+
+        categoryTable+" ("+colCategoryName+"));"
+        );
+
 
         //Trigger to ensure that when an exercise is created, the chosen category exists in the Category table
         db.execSQL("CREATE TRIGGER IF NOT EXISTS fk_empCategory_CategoryID " +
@@ -63,49 +58,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
 
         db.execSQL("CREATE VIEW IF NOT EXISTS "+viewExercises+
-        " AS SELECT "+exerciseTable+"."+colID+" AS _id,"+
-        " "+exerciseTable+"."+colName+","+
+        " AS SELECT "+exerciseTable+"."+colExerciseID+" AS _id,"+
+        " "+exerciseTable+"."+colExerciseName+","+
         " "+categoryTable+"."+colCategoryName+
         " FROM "+exerciseTable+" JOIN "+categoryTable+
-        " ON "+exerciseTable+"."+colCategory+" ="+categoryTable+"."+colCategoryID);
+        " ON "+exerciseTable+"."+colExerciseCategory+" ="+categoryTable+"."+colCategoryID);
 
 
         insertValues(db); //Adds some values to the Database.
 
-    }
-
-    public int UpdateExercise(Exercise exercise){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-
-        cv.put(colName, exercise.getName());
-        cv.put(colCategory, exercise.getCategory());
-
-        return db.update(exerciseTable, cv, colID+"=?",
-          new String[]{
-          String.valueOf(exercise.getId())});
-    }
-
-    public void DeleteExercise(Exercise exercise){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(exerciseTable, colID+"=?", new String[] {String.valueOf(exercise.getId())});
-        db.close();
-    }
-
-    Cursor getAllCategories(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT "+colCategoryID+" as _id,"
-        +colCategoryName+" from "+categoryTable, new String[] {});
-
-        return c;
-    }
-
-    public Cursor getExerciseByCategory(String Category){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = new String[]{"_id", colName, colCategoryName};
-        Cursor c = db.query(viewExercises, columns, colCategoryName+"=?",
-                new String[]{Category}, null, null, null);
-        return c;
     }
 
     private void insertValues(SQLiteDatabase db){
@@ -114,6 +75,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         cv.put(colCategoryID, 1);
         cv.put(colCategoryName, "Back");
         db.insert(categoryTable, colCategoryID, cv);
+
+        cv.clear();
+
+        cv.put(colExerciseID, 1);
+        cv.put(colExerciseName, "Marklyft");
+        cv.put(colExerciseCategory, "Back");
+        db.insert(exerciseTable, colExerciseID, cv);
 
         cv.clear();
 
@@ -151,7 +119,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         cv.put(colCategoryName, "Legs");
         db.insert(categoryTable, colCategoryID, cv);
 
-        //db.close();
     }
 
     @Override
@@ -165,6 +132,5 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("DROP VIEW IF EXISTS "+viewExercises);
         onCreate(db);
     }
-
 
 }

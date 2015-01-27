@@ -2,14 +2,12 @@ package com.ognom.gymlog;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.ognom.database.DatabaseHelper;
 
@@ -26,7 +24,7 @@ public class HomeScreen extends ActionBarActivity {
 
         setContentView(R.layout.home_screen);
 
-        final Button bAddExercise = (Button) findViewById(R.id.bAddExercise);
+        //final Button bAddExercise = (Button) findViewById(R.id.bAddExercise);
         createDBInstance(getApplicationContext());
         Log.d(TAG, "onCreate"); //Used for debugging.
     }
@@ -42,7 +40,6 @@ public class HomeScreen extends ActionBarActivity {
     public void createDBInstance(Context context){
         if(dbHelper == null){
             dbHelper = new DatabaseHelper(context);
-            dbHelper.createDatabase();
             Log.d(TAG, "createDBInstance");
           }
         else

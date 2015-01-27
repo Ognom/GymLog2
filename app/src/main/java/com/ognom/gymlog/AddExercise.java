@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.ognom.database.DatabaseController;
+
 import java.util.ArrayList;
 
 
@@ -26,6 +28,8 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
     View v;
     boolean marked = false;
     String markedCategory;
+    ListView lvExercises;
+    DatabaseController dbController;
 
 
     @Override
@@ -35,7 +39,8 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_exercise);
 
-        final ListView lvExercises = (ListView) findViewById(R.id.lvCategories);
+        dbController = DatabaseController.initialize(getApplicationContext());
+        lvExercises = (ListView) findViewById(R.id.lvCategories);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         lvExercises.setAdapter(adapter);
@@ -66,10 +71,17 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
 
     }
 
+
+    //This function is called when the user presses the "Add"-button.
     public void addExercise(View v){
         EditText et = (EditText) findViewById(R.id.etAddExercise);
 
-        Log.d(TAG, markedCategory+" "+et.getText());
+        String exerciseName = "Exercise: "+et.getText().toString()+"\n";
+        String markedCategory = "Category: "+this.markedCategory;
+
+        dbController.InsertExercise(exerciseName, markedCategory);
+
+        Log.d(TAG, "\n" +markedCategory+" "+exerciseName+markedCategory);
 
     }
 
@@ -84,7 +96,7 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
 
     private void addValues(ArrayAdapter<String> a){
 
-        Cursor c = HomeScreen.dbHelper.getExerciseByCategory("Back");
+        Cursor c = dbController.GetAllCategories();
         if(c.moveToFirst()) {
             String s = c.getString(1);
             a.add(s);
@@ -112,11 +124,6 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-    }
-
-    public void populateList(){
-        String[] s = getResources().getStringArray(R.array.category_array);
 
     }
 

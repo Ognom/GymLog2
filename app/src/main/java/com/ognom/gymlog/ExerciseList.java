@@ -1,5 +1,6 @@
 package com.ognom.gymlog;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -21,9 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class AddExercise extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class ExerciseList extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
-    private final String TAG = "AE";
+    private final String TAG = "CategoryList";
 
     Map<String, ValueHolder> map;
     ArrayList<String> list = new ArrayList<>();
@@ -34,6 +35,7 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
     String markedCategory;
     ListView lvExercises;
     DatabaseController dbController;
+    String category;
 
 
     @Override
@@ -41,16 +43,20 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
     {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_exercise);
+        setContentView(R.layout.exercise_list);
+
+        Intent i = getIntent();
+        category = i.getStringExtra("Category");
 
         map = new HashMap<String, ValueHolder>();
         dbController = DatabaseController.initialize(getApplicationContext());
-        lvExercises = (ListView) findViewById(R.id.lvCategories);
+        lvExercises = (ListView) findViewById(R.id.lvExercises);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+        addValues(adapter);
         lvExercises.setAdapter(adapter);
 
-        addValues(adapter);
+
 
         lvExercises.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -60,37 +66,21 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
 
                 markedCategory = String.valueOf(parent.getItemAtPosition(position));
                 Log.d(TAG, markedCategory);
-                    if(!marked){
-                        v = view;
-                        view.setBackgroundResource(R.color.highlighted_text_material_dark);
-                        marked=true;
-                    }
-                    else
-                    {
-                        v.setBackgroundResource(R.color.background_material_light);
-                        v = view;
-                        view.setBackgroundResource(R.color.highlighted_text_material_dark);
-                    }
+                if(!marked){
+                    v = view;
+                    view.setBackgroundResource(R.color.highlighted_text_material_dark);
+                    marked=true;
+                }
+                else
+                {
+                    v.setBackgroundResource(R.color.background_material_light);
+                    v = view;
+                    view.setBackgroundResource(R.color.highlighted_text_material_dark);
+                }
             }
         });
 
     }
-
-
-    //This function is called when the user presses the "Add"-button.
-    public void addExercise(View v){
-        EditText et = (EditText) findViewById(R.id.etAddExercise);
-
-        String exerciseName = et.getText().toString();
-        //String markedCategory = this.markedCategory;
-        ValueHolder holder = map.get(this.markedCategory);
-        Integer id = holder.mId;
-        dbController.InsertExercise(exerciseName, id);
-
-        Log.d(TAG, "\n" +markedCategory+" "+exerciseName+markedCategory);
-
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -101,7 +91,7 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
     }
 
     private void addValues(ArrayAdapter<String> aAdapter){
-        Cursor c = dbController.GetAllCategories();
+        Cursor c = dbController.GetExercisesByCategory(category);
         if(c.moveToFirst()) {
             addValueToAdapter(aAdapter, c);
             while (c.moveToNext())
@@ -118,7 +108,7 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
     public ValueHolder getValueHolder(Cursor aCursor)
     {
         Integer id = aCursor.getInt(aCursor.getColumnIndex(DatabaseHelper.Id));
-        String name = aCursor.getString(aCursor.getColumnIndex(DatabaseHelper.colCategoryName));
+        String name = aCursor.getString(aCursor.getColumnIndex(DatabaseHelper.colExerciseName));
         return new ValueHolder(id, name);
     }
 

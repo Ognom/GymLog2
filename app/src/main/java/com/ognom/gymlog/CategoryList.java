@@ -1,16 +1,16 @@
 package com.ognom.gymlog;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.ognom.database.DatabaseController;
@@ -21,18 +21,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class AddExercise extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class CategoryList extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
-    private final String TAG = "AE";
+    private final String TAG = "CategoryList";
 
     Map<String, ValueHolder> map;
     ArrayList<String> list = new ArrayList<>();
     ArrayAdapter<String> adapter;
 
-    View v;
-    boolean marked = false;
     String markedCategory;
-    ListView lvExercises;
+    ListView lvCategories;
     DatabaseController dbController;
 
 
@@ -41,56 +39,31 @@ public class AddExercise extends ActionBarActivity implements AdapterView.OnItem
     {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_exercise);
+        setContentView(R.layout.category_list);
 
         map = new HashMap<String, ValueHolder>();
         dbController = DatabaseController.initialize(getApplicationContext());
-        lvExercises = (ListView) findViewById(R.id.lvCategories);
+        lvCategories = (ListView) findViewById(R.id.lvCategories);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
-        lvExercises.setAdapter(adapter);
+        lvCategories.setAdapter(adapter);
 
         addValues(adapter);
 
-        lvExercises.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        lvCategories.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
 
                 markedCategory = String.valueOf(parent.getItemAtPosition(position));
-                Log.d(TAG, markedCategory);
-                    if(!marked){
-                        v = view;
-                        view.setBackgroundResource(R.color.highlighted_text_material_dark);
-                        marked=true;
-                    }
-                    else
-                    {
-                        v.setBackgroundResource(R.color.background_material_light);
-                        v = view;
-                        view.setBackgroundResource(R.color.highlighted_text_material_dark);
-                    }
+                Intent intent = new Intent(CategoryList.this, ExerciseList.class);
+                intent.putExtra("Category", markedCategory);
+                startActivity(intent);
             }
         });
 
     }
-
-
-    //This function is called when the user presses the "Add"-button.
-    public void addExercise(View v){
-        EditText et = (EditText) findViewById(R.id.etAddExercise);
-
-        String exerciseName = et.getText().toString();
-        //String markedCategory = this.markedCategory;
-        ValueHolder holder = map.get(this.markedCategory);
-        Integer id = holder.mId;
-        dbController.InsertExercise(exerciseName, id);
-
-        Log.d(TAG, "\n" +markedCategory+" "+exerciseName+markedCategory);
-
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)

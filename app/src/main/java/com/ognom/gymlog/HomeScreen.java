@@ -29,12 +29,21 @@ public class HomeScreen extends ActionBarActivity {
         Log.d(TAG, "onCreate"); //Used for debugging.
     }
 
+    //Called when the Add Exercise-button is clicked
     public void addExercise(View view){
         Log.d(TAG, "Add Exercise-button clicked");
 
-        Intent intent = new Intent(this, AddExercise.class);
+        Intent intent = new Intent(this, CategoryList.class);
         startActivity(intent);
 
+    }
+
+    //Called when the New Workout-button is clicked
+    public void newWorkout(View view){
+        Log.d(TAG, "New Workout-button clicked");
+
+        Intent intent = new Intent(this, CategoryList.class);
+        startActivity(intent);
     }
 
     public void createDBInstance(Context context){

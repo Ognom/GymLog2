@@ -16,6 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".AddExercise"
             android:label="@string/title_activity_add_exercise"
@@ -23,6 +24,24 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ognom.gymlog.HomeScreen" />
+        </activity>
+
+        <activity
+            android:name=".CategoryList"
+            android:label="CategoryList"
+            android:parentActivityName=".HomeScreen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ognom.gymlog.HomeScreen" />
+            </activity>
+
+        <activity
+            android:name=".ExerciseList"
+            android:label="ExerciseList"
+            android:parentActivityName=".CategoryList" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ognom.gymlog.CategoryList" />
         </activity>
     </application>
 

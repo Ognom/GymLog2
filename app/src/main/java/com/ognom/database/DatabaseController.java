@@ -33,14 +33,20 @@ public class DatabaseController {
         return dc;
     }
 
-    public void InsertExercise(String name, String category){
+    public void InsertExercise(String aName, Integer aCategoryId){
         db = dbHelper.getReadableDatabase();
-        RSexercises.insertExercise(name, category, db);
+        RSexercises.insertExercise(aName, aCategoryId, db);
     }
 
     public Cursor GetAllCategories(){
         db = dbHelper.getReadableDatabase();
         Cursor c = RScategories.getAllCategories(db);
+        return c;
+    }
+
+    public Cursor GetExercisesByCategory(String category){
+        db = dbHelper.getReadableDatabase();
+        Cursor c = RSexercises.getExerciseByCategoryName(category, db);
         return c;
     }
 

@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String colWorkoutExerciseId = "WorkoutId";
 
     public DatabaseHelper(Context context){
-        super(context, dbName, null, 48);
+        super(context, dbName, null, 50);
     }
 
     @Override
@@ -87,32 +87,25 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         );
 
-
-        //Trigger to ensure that when an exercise is created, the chosen category exists in the Category table
-        /*db.execSQL("CREATE TRIGGER IF NOT EXISTS fk_empCategory_CategoryID " +
-        " BEFORE INSERT "+
-        " ON "+exerciseTable+
-
-        " FOR EACH ROW BEGIN"+
-        " SELECT CASE WHEN ((SELECT "+colCategoryName+" FROM "+categoryTable+
-        " WHERE "+colCategoryName+"=new."+colCategoryName+" ) IS NULL)"+
-        " THEN RAISE (ABORT,'Foreign Key Violation') END;"+
-        " END;");
-
-
-        db.execSQL("CREATE VIEW IF NOT EXISTS "+viewExercises+
-        " AS SELECT "+exerciseTable+"."+colExerciseName+" AS _id,"+
-        " "+exerciseTable+"."+colExerciseName+","+
-        " "+categoryTable+"."+colCategoryName+
-        " FROM "+exerciseTable+" JOIN "+categoryTable+
-        " ON "+exerciseTable+"."+colExerciseCategoryId+" ="+categoryTable+"."+colCategoryName);
-        */
-
-        insertValues(db); //Adds some values to the Database.
+        insertCategories(db); //Adds the default Categories to the Database.
+        insertExercises(db); //Adds the default Exercises to the Database.
 
     }
 
-    private void insertValues(SQLiteDatabase db){
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS "+exerciseTable);
+        db.execSQL("DROP TABLE IF EXISTS "+categoryTable);
+        db.execSQL("DROP TABLE IF EXISTS "+workoutTable);
+        db.execSQL("DROP TABLE IF EXISTS "+workoutExerciseTable);
+        db.execSQL("DROP TABLE IF EXISTS "+setTable);
+
+        onCreate(db);
+    }
+
+
+    //Inserts the default categories to the database.
+    private void insertCategories(SQLiteDatabase db){
         ContentValues cv = new ContentValues();
 
         cv.put(Id, 1);
@@ -142,25 +135,191 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         cv.put(Id, 7);
         cv.put(colCategoryName, "Legs");
         db.insert(categoryTable, null, cv);
+    }
 
-        cv.clear();
 
+    //Inserts the default exercises to the database.
+    private void insertExercises(SQLiteDatabase db){
+
+        ContentValues cv = new ContentValues();
+
+        //Default back exercises
         cv.put(colExerciseName, "Marklyft");
         cv.put(colExerciseCategoryId, 1);
         db.execSQL("PRAGMA foreign_keys=ON");
         db.insert(exerciseTable, null, cv);
 
+        cv.put(colExerciseName, "Stångrodd");
+        cv.put(colExerciseCategoryId, 1);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Hantelrodd");
+        cv.put(colExerciseCategoryId, 1);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Rygglyft");
+        cv.put(colExerciseCategoryId, 1);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Chins");
+        cv.put(colExerciseCategoryId, 1);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        //Default chest exercises
+        cv.put(colExerciseName, "Bänkpress");
+        cv.put(colExerciseCategoryId, 2);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Hantelpress");
+        cv.put(colExerciseCategoryId, 2);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Decline hantelpress");
+        cv.put(colExerciseCategoryId, 2);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Hantelflyes");
+        cv.put(colExerciseCategoryId, 2);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Incline bänkpress");
+        cv.put(colExerciseCategoryId, 2);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Kabelflyes");
+        cv.put(colExerciseCategoryId, 2);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        //Default ab exercises
+        cv.put(colExerciseName, "Crunches");
+        cv.put(colExerciseCategoryId, 3);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Ab-wheel");
+        cv.put(colExerciseCategoryId, 3);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Lutande sit-ups");
+        cv.put(colExerciseCategoryId, 3);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Sidolyft med vikt");
+        cv.put(colExerciseCategoryId, 3);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Cable crunches");
+        cv.put(colExerciseCategoryId, 3);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        //Default shoulder exercises
+        cv.put(colExerciseName, "Militärpress");
+        cv.put(colExerciseCategoryId, 4);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Hantelpress");
+        cv.put(colExerciseCategoryId, 4);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Arnold press");
+        cv.put(colExerciseCategoryId, 4);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Militärpress, bakom");
+        cv.put(colExerciseCategoryId, 4);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Hammercurl");
+        cv.put(colExerciseCategoryId, 5);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        //Default biceps exercises
+        cv.put(colExerciseName, "Stångcurl");
+        cv.put(colExerciseCategoryId, 5);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "21:an");
+        cv.put(colExerciseCategoryId, 5);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Hantelcurl");
+        cv.put(colExerciseCategoryId, 5);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        //Default triceps exercises
+        cv.put(colExerciseName, "Smal bänkpress");
+        cv.put(colExerciseCategoryId, 6);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Rep-extensions");
+        cv.put(colExerciseCategoryId, 6);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Dips");
+        cv.put(colExerciseCategoryId, 6);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Skull Crushers");
+        cv.put(colExerciseCategoryId, 6);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        //Default leg exercises
+        cv.put(colExerciseName, "Knäböj");
+        cv.put(colExerciseCategoryId, 7);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Utfall med stång");
+        cv.put(colExerciseCategoryId, 7);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Vadpress");
+        cv.put(colExerciseCategoryId, 7);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Utfall med hantlar");
+        cv.put(colExerciseCategoryId, 7);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Framsida lår, maskin");
+        cv.put(colExerciseCategoryId, 7);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
+
+        cv.put(colExerciseName, "Baksida lår, maskin");
+        cv.put(colExerciseCategoryId, 7);
+        db.execSQL("PRAGMA foreign_keys=ON");
+        db.insert(exerciseTable, null, cv);
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+exerciseTable);
-        db.execSQL("DROP TABLE IF EXISTS "+categoryTable);
-        db.execSQL("DROP TABLE IF EXISTS "+workoutTable);
-        db.execSQL("DROP TABLE IF EXISTS "+workoutExerciseTable);
-        db.execSQL("DROP TABLE IF EXISTS "+setTable);
-
-        onCreate(db);
-    }
 
 }

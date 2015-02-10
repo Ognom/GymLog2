@@ -26,7 +26,7 @@ public class CategoryList extends ActionBarActivity implements AdapterView.OnIte
     private final String TAG = "CategoryList";
 
     Map<String, ValueHolder> map;
-    ArrayList<String> list = new ArrayList<>();
+    public static ArrayList<String> listOfCategories = new ArrayList<>();
     ArrayAdapter<String> adapter;
 
     String markedCategory;
@@ -45,7 +45,7 @@ public class CategoryList extends ActionBarActivity implements AdapterView.OnIte
         dbController = DatabaseController.initialize(getApplicationContext());
         lvCategories = (ListView) findViewById(R.id.lvCategories);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listOfCategories);
         lvCategories.setAdapter(adapter);
 
         addValues(adapter);
@@ -80,6 +80,10 @@ public class CategoryList extends ActionBarActivity implements AdapterView.OnIte
             while (c.moveToNext())
                 addValueToAdapter(aAdapter, c);
         }
+    }
+
+    public ArrayList<String> returnCategoryNames(){
+      return listOfCategories;
     }
 
     private void addValueToAdapter(ArrayAdapter<String> aAdapter, Cursor c) {

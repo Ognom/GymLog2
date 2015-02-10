@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -36,7 +37,6 @@ public class ExerciseList extends ActionBarActivity implements AdapterView.OnIte
     ListView lvExercises;
     DatabaseController dbController;
     String category;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -97,6 +97,11 @@ public class ExerciseList extends ActionBarActivity implements AdapterView.OnIte
             while (c.moveToNext())
                 addValueToAdapter(aAdapter, c);
         }
+    }
+
+    public void addNewExercise(View view){
+        Intent intent = new Intent(this, AddExerciseWindow.class);
+        startActivity(intent);
     }
 
     private void addValueToAdapter(ArrayAdapter<String> aAdapter, Cursor c) {

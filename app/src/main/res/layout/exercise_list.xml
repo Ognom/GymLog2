@@ -17,12 +17,26 @@
         android:focusable="true"
         android:layout_below="@+id/etExerciseSearch"
         android:id="@+id/lvExercises"
+        android:layout_marginTop="30dp"
         />
 
     <EditText
         android:id="@+id/etExerciseSearch"
-        android:width="300dp"
+        android:width="280dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/bAddNewExercise" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:id="@+id/bAddNewExercise"
+        android:clickable="true"
+        android:layout_toRightOf="@id/etExerciseSearch"
+        android:text="+"
+        android:onClick="addNewExercise"
+
+        />
 
 </RelativeLayout>

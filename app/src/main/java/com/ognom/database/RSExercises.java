@@ -8,7 +8,7 @@ import com.ognom.util.Exercise;
 
 public class RSExercises {
 
-    private String mSelectString = "SELECT * FROM Exercises WHERE (CategoryId = (SELECT _id FROM Category WHERE CategoryName = \'Back\'))";
+    private String mSelectString = "SELECT * FROM Exercises WHERE (CategoryId = (SELECT _id FROM Category WHERE CategoryName = ?))";
 
     public RSExercises(){
 
@@ -32,7 +32,7 @@ public class RSExercises {
 
     public Cursor getExerciseByCategoryName(String aCategoryName, SQLiteDatabase db){
         String whereClause = createCategoryNameWhereClause(aCategoryName);
-        Cursor c = db.rawQuery(mSelectString, null);
+        Cursor c = db.rawQuery(mSelectString, new String[]{aCategoryName});
 
         return c;
     }

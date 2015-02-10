@@ -6,6 +6,8 @@
     <string name="add_exercise">Add Exercise</string>
     <string name="title_activity_add_exercise">AddExercise</string>
     <string name="hello_world">Hello world!</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 
     <string-array name="category_array">
         <item>Abs</item>

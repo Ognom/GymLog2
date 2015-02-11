@@ -3,11 +3,13 @@ package com.ognom.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ognom.util.Exercise;
 
 public class RSExercises {
 
+    private String TAG  = "RSExercises";
     private String mSelectString = "SELECT * FROM Exercises WHERE (CategoryId = (SELECT _id FROM Category WHERE CategoryName = ?))";
 
     public RSExercises(){
@@ -52,6 +54,8 @@ public class RSExercises {
         cv.put(DatabaseHelper.colExerciseCategoryId, aCategoryId);
         db.execSQL("PRAGMA foreign_keys=ON");
         db.insertWithOnConflict(DatabaseHelper.exerciseTable, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+
+        Log.d(TAG, "Tried inserting " + aName + "in category " + aCategoryId);
     }
 
 }

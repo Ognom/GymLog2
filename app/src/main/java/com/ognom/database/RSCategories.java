@@ -15,4 +15,11 @@ public class RSCategories {
 
         return c;
     }
+
+    public Integer getCategoryId(SQLiteDatabase db, String categoryName){
+        Cursor c = db.rawQuery("SELECT _id FROM " + DatabaseHelper.categoryTable + " WHERE " + DatabaseHelper.colCategoryName+ " = ?", new String[]{categoryName});
+        c.moveToFirst();
+        return c.getInt(0);
+    }
+
 }

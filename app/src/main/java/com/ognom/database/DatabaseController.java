@@ -38,6 +38,12 @@ public class DatabaseController {
         RSexercises.insertExercise(aName, aCategoryId, db);
     }
 
+    public void InsertExercise(String aName, String aCategoryName){
+        db = dbHelper.getReadableDatabase();
+        Integer categoryId = RScategories.getCategoryId(db, aCategoryName);
+        RSexercises.insertExercise(aName, categoryId, db);
+    }
+
     public Cursor GetAllCategories(){
         db = dbHelper.getReadableDatabase();
         Cursor c = RScategories.getAllCategories(db);

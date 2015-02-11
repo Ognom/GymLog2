@@ -25,7 +25,7 @@ public class CategoryList extends ActionBarActivity implements AdapterView.OnIte
 
     private final String TAG = "CategoryList";
 
-    Map<String, ValueHolder> map;
+    public static Map<String, ValueHolder> map;
     public static ArrayList<String> listOfCategories = new ArrayList<>();
     ArrayAdapter<String> adapter;
 
@@ -44,11 +44,14 @@ public class CategoryList extends ActionBarActivity implements AdapterView.OnIte
         map = new HashMap<String, ValueHolder>();
         dbController = DatabaseController.initialize(getApplicationContext());
         lvCategories = (ListView) findViewById(R.id.lvCategories);
-
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listOfCategories);
-        lvCategories.setAdapter(adapter);
 
-        addValues(adapter);
+            //Check to see if the adapter is empty (first time onCreate is run). Else, don't run addValues to prevent duplicate categories.
+            if(adapter.isEmpty()) {
+                addValues(adapter);
+            }
+
+        lvCategories.setAdapter(adapter);
 
         lvCategories.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -63,6 +66,16 @@ public class CategoryList extends ActionBarActivity implements AdapterView.OnIte
             }
         });
 
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
     }
 
     @Override
@@ -98,7 +111,6 @@ public class CategoryList extends ActionBarActivity implements AdapterView.OnIte
         String name = aCursor.getString(aCursor.getColumnIndex(DatabaseHelper.colCategoryName));
         return new ValueHolder(id, name);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)

@@ -33,15 +33,18 @@ public class RSExercises {
     }
 
     public Cursor getExerciseByCategoryName(String aCategoryName, SQLiteDatabase db){
-        String whereClause = createCategoryNameWhereClause(aCategoryName);
         Cursor c = db.rawQuery(mSelectString, new String[]{aCategoryName});
-
         return c;
     }
 
+    public boolean exerciseExists(String exerciseName, SQLiteDatabase db){
+        Cursor c = db.rawQuery("SELECT * FROM " + DatabaseHelper.exerciseTable + " WHERE " + DatabaseHelper.colExerciseName + " =?", new String[]{exerciseName});
+        //Checks if the cursor is empty (has a first value). If true, the exercises exists and a true boolean is returned. Otherwise the exercise doesn't exists and a false boolean is returned.
+        return c.moveToFirst();
+    }
+
     public Cursor getExerciseById(Integer aCategoryId, SQLiteDatabase db){
-        Cursor c = db.rawQuery(mSelectString, new String[]{"*", DatabaseHelper.exerciseTable, "_id = " + aCategoryId});
-        return c;
+        return db.rawQuery(mSelectString, new String[]{"*", DatabaseHelper.exerciseTable, "_id = " + aCategoryId});
     }
 
     private String createCategoryNameWhereClause(String aCategoryName) {

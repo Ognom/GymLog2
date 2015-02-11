@@ -3,6 +3,7 @@ package com.ognom.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class DatabaseController {
 
@@ -11,6 +12,8 @@ public class DatabaseController {
     private SQLiteDatabase db;
     private RSCategories RScategories;
     private RSExercises RSexercises;
+
+    private String TAG = "DatabaseController";
 
     private DatabaseController (Context context){
         this.dbHelper = new DatabaseHelper(context);
@@ -41,19 +44,21 @@ public class DatabaseController {
     public void InsertExercise(String aName, String aCategoryName){
         db = dbHelper.getReadableDatabase();
         Integer categoryId = RScategories.getCategoryId(db, aCategoryName);
+        if(RSexercises.exerciseExists(aName, db)){
+            Log.d(TAG, "An exercise with that name already exists");
+            return;
+        }
         RSexercises.insertExercise(aName, categoryId, db);
     }
 
     public Cursor GetAllCategories(){
         db = dbHelper.getReadableDatabase();
-        Cursor c = RScategories.getAllCategories(db);
-        return c;
+        return RScategories.getAllCategories(db);
     }
 
     public Cursor GetExercisesByCategory(String category){
         db = dbHelper.getReadableDatabase();
-        Cursor c = RSexercises.getExerciseByCategoryName(category, db);
-        return c;
+        return RSexercises.getExerciseByCategoryName(category, db);
     }
 
 }

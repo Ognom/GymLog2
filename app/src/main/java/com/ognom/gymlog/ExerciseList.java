@@ -83,6 +83,23 @@ public class ExerciseList extends ActionBarActivity implements AdapterView.OnIte
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+    }
+
+
+    //Called when AddExerciseWindows confirm button is clicked. Adds the exercise to the adapter.
+    protected void onActivityResult (int RequestCode, int resultCode, Intent data){
+        if(RequestCode == 1){
+            if(resultCode == RESULT_OK){
+                String s = data.getStringExtra("exerciseAdded");
+                adapter.add(s);
+
+            }
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -99,9 +116,11 @@ public class ExerciseList extends ActionBarActivity implements AdapterView.OnIte
         }
     }
 
+
+    //Called when the + - button is clicked. startActivityForResult is used to pass a String value between the activities.
     public void addNewExercise(View view){
         Intent intent = new Intent(this, AddExerciseWindow.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     private void addValueToAdapter(ArrayAdapter<String> aAdapter, Cursor c) {

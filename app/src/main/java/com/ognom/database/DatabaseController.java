@@ -41,14 +41,16 @@ public class DatabaseController {
         RSexercises.insertExercise(aName, aCategoryId, db);
     }
 
-    public void InsertExercise(String aName, String aCategoryName){
+    //Returns true if the exercise was successfully added to the database. False if not (an exercise with that name already exists)
+    public boolean InsertExercise(String aName, String aCategoryName){
         db = dbHelper.getReadableDatabase();
         Integer categoryId = RScategories.getCategoryId(db, aCategoryName);
         if(RSexercises.exerciseExists(aName, db)){
             Log.d(TAG, "An exercise with that name already exists");
-            return;
+            return false;
         }
         RSexercises.insertExercise(aName, categoryId, db);
+        return true;
     }
 
     public Cursor GetAllCategories(){

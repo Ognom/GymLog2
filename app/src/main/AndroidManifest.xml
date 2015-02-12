@@ -43,7 +43,16 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ognom.gymlog.ExerciseList"/>
-            </activity>
+        </activity>
+
+        <activity
+            android:name=".PopupDuplicateExercise"
+            android:label="Duplicate exercise name"
+            android:parentActivityName=".AddExerciseWindow" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ognom.gymlog.AddExerciseWindow"/>
+        </activity>
 
     </application>
 

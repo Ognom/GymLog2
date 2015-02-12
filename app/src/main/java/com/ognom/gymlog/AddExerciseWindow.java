@@ -1,6 +1,7 @@
 package com.ognom.gymlog;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -50,7 +51,14 @@ public class AddExerciseWindow extends ActionBarActivity{
         Log.d(TAG, categoryChosen+ " " + exerciseName);
 
         dc = dc.initialize(this);
-        dc.InsertExercise(exerciseName, categoryChosen);
+        if(!(dc.InsertExercise(exerciseName, categoryChosen))){
+               //Activity was not inserted (duplicate exercise name)
+        }
+
+        Intent i = new Intent();
+        i.putExtra("exerciseAdded", exerciseName);
+        setResult(RESULT_OK, i);
+        finish();
     }
 
 }

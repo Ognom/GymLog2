@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public static final String colWorkoutExerciseId = "WorkoutId";
 
     public DatabaseHelper(Context context){
-        super(context, dbName, null, 50);
+        super(context, dbName, null, 51);
     }
 
     @Override

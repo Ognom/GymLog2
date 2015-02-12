@@ -45,7 +45,7 @@ public class DatabaseController {
     public boolean InsertExercise(String aName, String aCategoryName){
         db = dbHelper.getReadableDatabase();
         Integer categoryId = RScategories.getCategoryId(db, aCategoryName);
-        if(RSexercises.exerciseExists(aName, db)){
+        if(RSexercises.exerciseExists(aName, db) || aName == ""){
             Log.d(TAG, "An exercise with that name already exists");
             return false;
         }

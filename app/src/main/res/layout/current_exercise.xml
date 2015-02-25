@@ -25,7 +25,9 @@
         android:layout_height="wrap_content"
         android:text="-"
         android:id="@+id/bMinus"
-        android:layout_gravity="right" />
+        android:layout_gravity="right"
+
+        android:onClick="onClickMinus"/>
 
 
     <Button
@@ -36,9 +38,37 @@
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+
+        android:onClick="onClickPlus"/>
 
     </RelativeLayout>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:width="120dp"
+        android:ems="10"
+        android:id="@+id/etReps"
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Cancel"
+        android:textAllCaps="false"
+        android:id="@+id/bCancelUpdate"
+        android:visibility="invisible"
+
+        android:onClick="cancelButton"/>
 
     <Button
         android:id="@+id/bAddSet"
@@ -47,7 +77,24 @@
         android:text="Add set"
         android:textAllCaps="false"
         android:layout_gravity="center"
+        android:layout_margin="20dp"
+
+        android:onClick="addSet"
+    />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:textAllCaps="false"
+        android:id="@+id/bUpdate"
+        android:layout_margin="20dp"
+        android:visibility="invisible"
+
+        android:onClick="updateSet"
         />
+
+    </LinearLayout>
 
     <ListView
         android:layout_width="match_parent"

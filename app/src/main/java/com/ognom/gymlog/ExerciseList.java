@@ -34,7 +34,7 @@ public class ExerciseList extends ActionBarActivity implements AdapterView.OnIte
 
     View v;
     boolean marked = false;
-    String markedCategory;
+    String markedExercise;
     ListView lvExercises;
     DatabaseController dbController;
     String category;
@@ -48,6 +48,7 @@ public class ExerciseList extends ActionBarActivity implements AdapterView.OnIte
 
         Intent i = getIntent();
         category = i.getStringExtra("Category");
+        setTitle(category);
 
         map = new HashMap<String, ValueHolder>();
         dbController = DatabaseController.initialize(getApplicationContext());
@@ -66,10 +67,10 @@ public class ExerciseList extends ActionBarActivity implements AdapterView.OnIte
             {
 
 
-                markedCategory = String.valueOf(parent.getItemAtPosition(position));
-                Log.d(TAG, markedCategory);
+                markedExercise = String.valueOf(parent.getItemAtPosition(position));
+                Log.d(TAG, markedExercise);
                 Intent intent = new Intent(ExerciseList.this, CurrentExercise.class);
-                intent.putExtra("Exercise", markedCategory);
+                intent.putExtra("Exercise", markedExercise);
                 startActivity(intent);
             }
         });

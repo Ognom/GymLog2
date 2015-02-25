@@ -20,7 +20,7 @@
 
         <activity
             android:name=".CategoryList"
-            android:label="CategoryList"
+            android:label="Category List"
             android:parentActivityName=".HomeScreen" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -29,7 +29,6 @@
 
         <activity
             android:name=".ExerciseList"
-            android:label="ExerciseList"
             android:parentActivityName=".CategoryList" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -38,7 +37,7 @@
 
         <activity
             android:name=".AddExerciseWindow"
-            android:label="ExerciseWindow"
+            android:label="Add Exercise"
             android:parentActivityName=".ExerciseList" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -56,7 +55,6 @@
         
         <activity
             android:name=".CurrentExercise"
-            android:label="Current exercise"
             android:parentActivityName=".ExerciseList" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

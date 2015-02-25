@@ -53,6 +53,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ognom.gymlog.AddExerciseWindow"/>
         </activity>
+        
+        <activity
+            android:name=".CurrentExercise"
+            android:label="Current exercise"
+            android:parentActivityName=".ExerciseList" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ognom.gymlog.ExerciseList"
+                />
+        </activity>
+
 
     </application>
 

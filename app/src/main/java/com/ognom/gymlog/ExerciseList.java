@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 import com.ognom.database.DatabaseController;
 import com.ognom.database.DatabaseHelper;
+import com.ognom.util.Exercise;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,26 +58,19 @@ public class ExerciseList extends ActionBarActivity implements AdapterView.OnIte
         lvExercises.setAdapter(adapter);
 
 
-
+        //Launches the CurrentExercise-window when an exercise is clicked.
         lvExercises.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
 
+
                 markedCategory = String.valueOf(parent.getItemAtPosition(position));
                 Log.d(TAG, markedCategory);
-                if(!marked){
-                    v = view;
-                    view.setBackgroundResource(R.color.highlighted_text_material_dark);
-                    marked=true;
-                }
-                else
-                {
-                    v.setBackgroundResource(R.color.background_material_light);
-                    v = view;
-                    view.setBackgroundResource(R.color.highlighted_text_material_dark);
-                }
+                Intent intent = new Intent(ExerciseList.this, CurrentExercise.class);
+                intent.putExtra("Exercise", markedCategory);
+                startActivity(intent);
             }
         });
 

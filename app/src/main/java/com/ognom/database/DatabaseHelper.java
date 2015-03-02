@@ -66,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         +colDate+ " TEXT);"
         );
 
+        //Creates the WorkoutExercise table. Stores the actual values for the workout
         db.execSQL("CREATE TABLE IF NOT EXISTS "+
         workoutExerciseTable + "("
         +Id+" INTEGER PRIMARY KEY, "
@@ -76,6 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         +"FOREIGN KEY ("+colWorkoutId+") REFERENCES "+workoutTable+" ("+Id+"));"
         );
 
+        //Creates the set table. Stores the amount of reps completed on each set of a specific workout.
         db.execSQL("CREATE TABLE IF NOT EXISTS "+
         setTable + "("
         +Id+" INTEGER PRIMARY KEY, "

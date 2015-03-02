@@ -12,6 +12,7 @@ public class DatabaseController {
     private SQLiteDatabase db;
     private RSCategories RScategories;
     private RSExercises RSexercises;
+    private RSWorkouts RSWorkouts;
 
     private String TAG = "DatabaseController";
 
@@ -19,6 +20,7 @@ public class DatabaseController {
         this.dbHelper = new DatabaseHelper(context);
         RScategories = new RSCategories();
         RSexercises = new RSExercises();
+        RSWorkouts = new RSWorkouts();
     }
 
     //Starts a new instance of DatabaseController if no earlier instance exists.
